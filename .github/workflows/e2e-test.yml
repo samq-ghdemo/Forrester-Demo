@@ -1,5 +1,7 @@
 name: E2E Test
-on: [push, pull_request]
+on:
+  pull_request:
+    branches: [ master ]
 
 jobs:
   e2e-test:
@@ -9,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ["10.x", "12.x", "14.x"]
+        node-version: ["12.x"]
 
     steps:
       - name: Checkout https://github.com/${{ github.repository }}@${{ github.ref }}
@@ -22,25 +24,20 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Use cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.npm
-            ~/.cache
-          key: ${{ runner.os }}-node${{ matrix.node-version }}-E2E-${{ hashFiles('package-lock.json') }}
-
       - name: Install dependencies
         run: |
           npm ci
+          sudo apt update
+          export DEBIAN_FRONTEND=noninteractive
+          echo $DEBIAN_FRONTEND
+          sudo apt install -y xvfb libgtk-3-0 libxss1 libgconf-2-4 libnss3 libasound2 netcat
+          echo 'pre-req install successful'
           npm run cy:verify
 
-      - name: Start MongoDB
+      - name: Start application
         run: |
-          docker run -d -p 27017:27017 mongo:4.0
-          timeout 60s bash -c 'until nc -z -w 2 localhost 27017 && echo MongoDB ready; do sleep 2; done'
+          docker-compose up -d
 
       - name: Run E2E test suite
         run: |
-          NODE_ENV=test npm start -- --silent &
           npm run test:ci
