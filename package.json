@@ -24,7 +24,7 @@
     "amdefine": "1.0.1"
   },
   "comments": {
-    "//": "a9 insecure components"
+    "//": "a9 insecure components "
   },
   "scripts": {
     "start": "node server.js",
