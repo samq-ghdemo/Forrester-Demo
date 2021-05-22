@@ -14,6 +14,6 @@
     "minSeverityLevel": "LOW"
   },
   "remediateSettings": {
-    "transitiveRemedation": true
+    "transitiveRemediation": true
   }
 }
