@@ -4,8 +4,7 @@
     "configExternalURL": "",
     "projectToken": "",
     "baseBranches": [],
-    "enableLicenseViolations": true,
-    "enableIaC": true
+    "enableLicenseViolations": true
   },
   "checkRunSettings": {
     "vulnerableCheckRunConclusionLevel": "failure",
@@ -15,11 +14,6 @@
     "minSeverityLevel": "LOW"
   },
   "remediateSettings": {
-    "enableRenovate": true,
-    "dependencyDashboard": true,
-    "extends": [
-      "github>whitesource/merge-confidence:beta",
-      "github>samq-ghdemo/renovate:demo"
-      ]
+    "transitiveRemedation": true
   }
 }
