@@ -8,6 +8,7 @@ WS_PROJECTTOKEN=$(jq -r '.projects | .[] | .projectToken' ./whitesource/scanProj
 
 ### Get CVE by Red Shield
 for REDSHIELD in $(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getProjectSecurityAlertsByVulnerabilityReport',   'userKey' : '$WS_USERKEY',   'projectToken': '$WS_PROJECTTOKEN', 'format' : 'json'}' | jq '.alerts | .[] | select(.euaShield=="RED") | .vulnerabilityId')
+do
 echo $REDSHIELD
 
 ## Get Github issue number by CVE
@@ -25,5 +26,5 @@ echo $PROJECTID
 ### Construct Link
 EUALINK="$APIURL/Wss/WSS.html#!libraryVulnerabilities;uuid=$KEYUUID;project=$PROJECTID"
 echo $EUALINK
-
+done
 #gh issue comment $GHISSUE --body "$EUALINK"
