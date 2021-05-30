@@ -18,7 +18,7 @@ do
 echo "REDSHIELD"$redshieldvuln
 
 ## Get Github issue number by CVE
-GHISSUE=$(gh issue list -S $reshieldvuln --json number --jq '.[] | .number ')
+GHISSUE=$(gh issue list -S $redshieldvuln --json number --jq '.[] | .number ')
 echo "GHISSUE:"$GHISSUE
 
 LIBNAME=$(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getProjectSecurityAlertsByVulnerabilityReport',   'userKey' : '$WS_USERKEY',   'projectToken': '$WS_PROJECTTOKEN', 'format' : 'json'}' | jq '.alerts[] | select(.vulnerabilityId=="$reshieldvuln") | .libraryName')
