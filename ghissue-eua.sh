@@ -10,7 +10,7 @@ echo "projectName" $WS_PROJECTNAME
 echo "projectToken" $WS_PROJECTTOKEN
 
 ### Get ProjectID
-PROJECTID=$(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getOrganizationEffectiveUsageAnalysis',   'userKey' : '$WS_USERKEY',   'orgToken': '$WS_APIKEY','format' : 'json'}' | jq '.products[] | select(.productName=="$WS_PRODUCTNAME") | .projects[] | select(.projectName=="$WS_PROJECTNAME") | .projectId ')
+PROJECTID=$(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getOrganizationEffectiveUsageAnalysis',   'userKey' : '$WS_USERKEY',   'orgToken': '$WS_APIKEY','format' : 'json'}' | jq '.products[] | select(.productName=='\"$WS_PRODUCTNAME\"') | .projects[] | select(.projectName=='\"$WS_PROJECTNAME\"') | .projectId ')
 echo "PROJECTID:"$PROJECTID
 
 ### Get CVE by Red Shield
@@ -22,10 +22,10 @@ echo "REDSHIELD"$redshieldvuln
 GHISSUE=$(gh issue list -S $redshieldvuln --json number --jq '.[] | .number ')
 echo "GHISSUE:"$GHISSUE
 
-LIBNAME=$(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getProjectSecurityAlertsByVulnerabilityReport',   'userKey' : '$WS_USERKEY',   'projectToken': '$WS_PROJECTTOKEN', 'format' : 'json'}' | jq '.alerts[] | select(.vulnerabilityId=="$reshieldvuln") | .libraryName')
+LIBNAME=$(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getProjectSecurityAlertsByVulnerabilityReport',   'userKey' : '$WS_USERKEY',   'projectToken': '$WS_PROJECTTOKEN', 'format' : 'json'}' | jq '.alerts[] | select(.vulnerabilityId=='\"$reshieldvuln\"') | .libraryName')
 
 ### Get keyUuid - requires productName and projectName
-KEYUUID=$(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getOrganizationEffectiveUsageAnalysis',   'userKey' : '$WS_USERKEY',   'orgToken': '$WS_APIKEY','format' : 'json'}' | jq -r '.products[] | select(.productName=="$WS_PRODUCTNAME") | .projects[] | select(.projectName=="$WS_PROJECTNAME") | .libraries[] | select(.name=="LIBNAME") | .keyUuid')
+KEYUUID=$(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getOrganizationEffectiveUsageAnalysis',   'userKey' : '$WS_USERKEY',   'orgToken': '$WS_APIKEY','format' : 'json'}' | jq -r '.products[] | select(.productName=='\"$WS_PRODUCTNAME\"') | .projects[] | select(.projectName=='\"$WS_PROJECTNAME\"') | .libraries[] | select(.name=='\"$LIBNAME\"') | .keyUuid')
 echo "KEYUIID:" $KEYUUID
 
 
