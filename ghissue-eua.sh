@@ -2,6 +2,7 @@
 # Add the following after calling the unified agent in a github-action.yml file from the WhiteSource Field Tookit
 #         chmod +x ./ghissue-eua.sh
 #          ./ghissue-eua.sh
+# Known issue - this script will not work on the first scan as EUA needs to process on the backend before results are available.
 
 APIURL=https://saas.whitesourcesoftware.com
 WS_PROJECTTOKEN=$(jq -r '.projects | .[] | .projectToken' ./whitesource/scanProjectDetails.json)
@@ -31,5 +32,6 @@ echo "KEYUIID:" $KEYUUID
 ### Construct Link
 EUALINK="$APIURL/Wss/WSS.html#!libraryVulnerabilities;uuid=$KEYUUID;project=$PROJECTID"
 echo $EUALINK
-done
+
 gh issue comment $GHISSUE --body "Red Shield Alert - An effective vulnerability has been found in your open-source code demanding urgent remediation steps.  $EUALINK"
+done
