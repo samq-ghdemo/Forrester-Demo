@@ -32,4 +32,4 @@ echo "KEYUIID:" $KEYUUID
 EUALINK="$APIURL/Wss/WSS.html#!libraryVulnerabilities;uuid=$KEYUUID;project=$PROJECTID"
 echo $EUALINK
 done
-#gh issue comment $GHISSUE --body "Red Shield - An effective vulnerability has been found in your open-code demanding urgent remediation steps.  $EUALINK"
+gh issue comment $GHISSUE --body "Red Shield Alert - An effective vulnerability has been found in your open-source code demanding urgent remediation steps.  $EUALINK"
