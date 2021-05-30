@@ -49,3 +49,9 @@ jobs:
           java -jar wss-unified-agent.jar -appPath ./package.json -d ./
            chmod +x ./ghissue-eua.sh
           ./ghissue-eua.sh
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: Whitesource-Logs
+          path: whitesource
+          retention-days: 1

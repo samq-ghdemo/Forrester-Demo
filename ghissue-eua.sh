@@ -7,6 +7,7 @@ APIURL=https://saas.whitesourcesoftware.com
 WS_PROJECTTOKEN=$(jq -r '.projects | .[] | .projectToken' ./whitesource/scanProjectDetails.json)
 echo "productName" $WS_PRODUCTNAME
 echo "projectName" $WS_PROJECTNAME
+echo "projectToken" $WS_PROJECTTOKEN
 
 ### Get ProjectID
 PROJECTID=$(curl --request POST $APIURL'/api/v1.3' --header 'Content-Type: application/json' --header 'Accept-Charset: UTF-8'  --data-raw '{   'requestType' : 'getOrganizationEffectiveUsageAnalysis',   'userKey' : '$WS_USERKEY',   'orgToken': '$WS_APIKEY','format' : 'json'}' | jq '.products[] | select(.productName=="$WS_PRODUCTNAME") | .projects[] | select(.projectName=="$WS_PROJECTNAME") | .projectId ')
